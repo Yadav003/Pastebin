@@ -43,7 +43,7 @@ pastebin-lite/
 ### Prerequisites
 
 - Node.js 18+ 
-- PostgreSQL 14+ (running and accessible)
+- A cloud PostgreSQL database (provide `DATABASE_URL`)
 - npm
 
 ### 1. Clone and Install
@@ -64,8 +64,8 @@ npm install
 # Backend configuration
 cd backend
 cp .env.example .env
-# Edit .env with your PostgreSQL connection string:
-# DATABASE_URL=postgresql://user:password@localhost:5432/pastebin_lite
+# Edit .env with your *cloud* PostgreSQL connection string:
+# DATABASE_URL=postgresql://user:password@host:5432/database
 ```
 
 ### 3. Start the Application

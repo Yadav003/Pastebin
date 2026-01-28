@@ -5,25 +5,19 @@ let pool = null;
 
 function getPool() {
   if (!pool) {
-    const poolConfig = config.database.connectionString
-      ? {
-          connectionString: config.database.connectionString,
-          ssl: config.database.ssl,
-          max: 10,
-          idleTimeoutMillis: 30000,
-          connectionTimeoutMillis: 10000,
-        }
-      : {
-          host: config.database.host,
-          port: config.database.port,
-          user: config.database.user,
-          password: config.database.password,
-          database: config.database.name,
-          ssl: config.database.ssl,
-          max: 10,
-          idleTimeoutMillis: 30000,
-          connectionTimeoutMillis: 10000,
-        };
+    if (!config.database.connectionString) {
+      throw new Error(
+        'DATABASE_URL is required (cloud Postgres). Set DATABASE_URL in your environment.'
+      );
+    }
+
+    const poolConfig = {
+      connectionString: config.database.connectionString,
+      ssl: config.database.ssl,
+      max: 10,
+      idleTimeoutMillis: 30000,
+      connectionTimeoutMillis: 10000,
+    };
 
     pool = new Pool(poolConfig);
     pool.on('error', (err) => {
