@@ -11,6 +11,16 @@ const { initializeDatabase } = require('./db/init');
 
 const app = express();
 
+// Initialize database on first request
+let dbInitialized = false;
+app.use(async (req, res, next) => {
+  if (!dbInitialized) {
+    await initializeDatabase();
+    dbInitialized = true;
+  }
+  next();
+});
+
 app.use(cors({
   origin: config.frontendUrl,
   credentials: true,
