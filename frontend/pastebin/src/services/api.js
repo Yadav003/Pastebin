@@ -1,6 +1,50 @@
 
-const API_URL = import.meta.env.VITE_API_URL || 
-  (import.meta.env.PROD ? `${window.location.origin}/api` : 'http://localhost:3000/api');
+const DEV_FALLBACK_API_URL = 'http://localhost:3000/api';
+
+function normalizeApiUrl(rawUrl) {
+  if (typeof rawUrl !== 'string') {
+    return '';
+  }
+
+  const trimmed = rawUrl.trim();
+  if (!trimmed) {
+    return '';
+  }
+
+  // Allow relative base like "/api"
+  if (trimmed.startsWith('/')) {
+    return trimmed.replace(/\/+$/u, '');
+  }
+
+  try {
+    const url = new URL(trimmed);
+    const hasPath = url.pathname && url.pathname !== '/';
+    const normalizedPath = (hasPath ? url.pathname : '/api').replace(/\/+$/u, '');
+    return `${url.origin}${normalizedPath}`;
+  } catch {
+    // Fallback for non-URL strings (e.g., missing scheme)
+    return trimmed.replace(/\/+$/u, '');
+  }
+}
+
+function resolveApiUrl() {
+  const envUrl = normalizeApiUrl(import.meta.env.VITE_API_URL);
+  if (envUrl) {
+    return envUrl;
+  }
+
+  if (!import.meta.env.PROD) {
+    return DEV_FALLBACK_API_URL;
+  }
+
+  if (typeof window !== 'undefined' && window.location?.origin) {
+    return normalizeApiUrl(`${window.location.origin}/api`);
+  }
+
+  throw new Error('VITE_API_URL is not set. Define it in the frontend environment variables.');
+}
+
+const API_URL = resolveApiUrl();
 
 async function readJsonOrText(response) {
   const contentType = response.headers.get('content-type') || '';

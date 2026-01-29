@@ -98,11 +98,23 @@ npm run dev
 | `FRONTEND_URL` | CORS allowed origin | `http://localhost:5173` |
 | `TEST_MODE` | Enable test time manipulation | `0` |
 
+**Dev/Prod examples**:
+- Dev: use [backend/.env.development.example](backend/.env.development.example)
+- Prod: use [backend/.env.production.example](backend/.env.production.example)
+
 ### Frontend (.env)
 
 | Variable | Description | Default |
 |----------|-------------|---------|
-| `VITE_API_URL` | Backend API URL | `http://localhost:3000/api` |
+| `VITE_API_URL` | Backend API URL (absolute or relative). In production, set this to your deployed backend (e.g. `https://your-backend.onrender.com/api`). | `http://localhost:3000/api` |
+
+**Notes**:
+- If `VITE_API_URL` is not set in production, the app falls back to same-origin `/api`.
+- If `VITE_API_URL` points to a root domain (e.g. `https://example.com`), `/api` is appended automatically.
+
+**Dev/Prod examples**:
+- Dev: use [frontend/pastebin/.env.development.example](frontend/pastebin/.env.development.example)
+- Prod: use [frontend/pastebin/.env.production.example](frontend/pastebin/.env.production.example)
 
 ## API Endpoints
 
