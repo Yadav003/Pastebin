@@ -94,7 +94,7 @@ npm run dev
 | `PORT` | Server port | `3000` |
 | `NODE_ENV` | Environment mode | `development` |
 | `DATABASE_URL` | PostgreSQL connection string | - |
-| `BASE_URL` | Base URL for paste URLs in responses | `http://localhost:3000` |
+| `BASE_URL` | Base URL for paste URLs in responses
 | `FRONTEND_URL` | CORS allowed origin | `http://localhost:5173` |
 | `TEST_MODE` | Enable test time manipulation | `0` |
 
